@@ -40,8 +40,7 @@ cf login --email myemail --password mypassword
 cf switch-space development
 ```
 
-# create a manifest.yml file like this
-# (in particular for specifying the port, as otherwise Ratpack uses 5050)
+* create a manifest.yml file like this (in particular for specifying the port, as otherwise Ratpack uses 5050)
 
 ```
 ---
