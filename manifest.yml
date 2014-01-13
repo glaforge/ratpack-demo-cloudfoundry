@@ -1,0 +1,10 @@
+---
+applications:
+- name: ratpacktest
+  memory: 512M
+  instances: 1
+  host: ratpacktest
+  domain: cfapps.io
+  path: ./build/libs/ratpacktest-fat.jar
+  env:
+    ratpack-port: 80
