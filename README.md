@@ -1,48 +1,59 @@
-Ratpack project template
------------------------------
+Instructions
+===============
 
-You have just created a basic Groovy Ratpack application. It doesn't do much
-at this point, but we have set you up with a standard project structure, a
-simple home page, and Spock for writing tests (because you'd be mad not to
-use it).
+Instructions
 
-In this project you get:
+* install GVM, the command-line tool for installing Groovy-friendly projects :-) http://gvmtool.net/
 
-* A Gradle build file with pre-built Gradle wrapper
-* A tiny home page at src/ratpack/templates/index.html (it's a template)
-* A routing file at src/ratpack/ratpack.groovy
-* Reloading enabled in build.gradle
-* A standard project structure:
+```
+curl -s get.gvmtool.net | bash
+````
 
-    <proj>
-      |
-      +- src
-          |
-          +- ratpack
-          |     |
-          |     +- ratpack.groovy
-          |     +- ratpack.properties
-          |     +- public          // Static assets in here
-          |          |
-          |          +- images
-          |          +- lib
-          |          +- scripts
-          |          +- styles
-          |
-          +- main
-          |   |
-          |   +- groovy
-                   |
-                   +- // App classes in here!
-          |
-          +- test
-              |
-              +- groovy
-                   |
-                   +- // Spock tests in here!
+* lazybones is a template project generator/installer that way you can create a Ratpack app easily
 
-That's it! You can start the basic app with
+```
+gvm install lazybones
+mkdir ratpacktest
+cd ratpacktest
+```
 
-    ./gradlew run
+* create a demo ratpack app
 
-but it's up to you to add the bells, whistles, and meat of the application.
+```
+lazybones create ratpack .
+```
+
+* give Gradle a bit more memory to avoid a Java Heap Space error later on
+
+```
+export GRADLE_OPTS=-Xmx1024m
+```
+
+* if we use the fatJar approach, which jars everything up (even static web resources, etc) then there's already a proper META-INF/MANIFEST.MF file with the Main-Class and Class-Path attributes correctly specified
+
+```
+./gradlew fatJar
+````
+
+* let's setup the cf stuff
+
+```
+cf target api.run.pivotal.io
+cf login --email myemail --password mypassword
+cf switch-space development
+```
+
+* create a manifest.yml file like this (in particular for specifying the port, as otherwise Ratpack uses 5050)
+
+```
+---
+applications:
+- name: ratpacktest
+  memory: 512M
+  instances: 1
+  host: ratpacktest
+  domain: cfapps.io
+  path: ./build/libs/ratpacktest-fat.jar
+  env:
+    ratpack-port: 80
+```
