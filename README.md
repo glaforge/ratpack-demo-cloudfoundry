@@ -23,19 +23,19 @@ cd ratpacktest
 lazybones create ratpack .
 ```
 
-* give Gradle a bit more memory to avoid a Java Heap Space error later on
+* potentially give Gradle a bit more memory to avoid a Java Heap Space error later on
 
 ```
 export GRADLE_OPTS=-Xmx1024m
 ```
 
-* if we use the fatJar approach, which jars everything up (even static web resources, etc) then there's already a proper META-INF/MANIFEST.MF file with the Main-Class and Class-Path attributes correctly specified
+* use the distZip task to create the archive to be uploaded on CloudFoundry
 
 ```
-./gradlew fatJar
+./gradlew distZip
 ````
 
-* let's setup the cf stuff
+* let's setup the CloudFoundry access (we assumed you have installed the cf command-line tooling with `gem install cf`)
 
 ```
 cf target api.run.pivotal.io
@@ -43,7 +43,7 @@ cf login --email myemail --password mypassword
 cf switch-space development
 ```
 
-* create a manifest.yml file like this (in particular for specifying the port, as otherwise Ratpack uses 5050)
+* create a manifest.yml file as follows, in particular, notice the usage of the custom buildpack that Ben Hale developed with specific Ratpack support
 
 ```
 ---
@@ -53,7 +53,14 @@ applications:
   instances: 1
   host: ratpacktest
   domain: cfapps.io
-  path: ./build/libs/ratpacktest-fat.jar
-  env:
-    ratpack-port: 80
+  path: build/distributions/ratpacktest.zip
+  buildpack: https://github.com/nebhale/java-buildpack-with-ratpack.git
+
 ```
+
+* and then, you should be able to deploy your Ratpack application to CloudFoundry with:
+
+```
+cf push
+```
+
