@@ -3,8 +3,6 @@ applications:
 - name: ratpacktest
   memory: 512M
   instances: 1
-  host: ratpacktest
   domain: cfapps.io
-  path: ./build/libs/ratpacktest-fat.jar
-  env:
-    ratpack-port: 80
+  path: build/distributions/ratpack-demo-cloudfoundry.zip
+  buildpack: https://github.com/nebhale/java-buildpack-with-ratpack.git
