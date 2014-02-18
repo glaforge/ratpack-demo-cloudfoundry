@@ -43,7 +43,7 @@ cf login --email myemail --password mypassword
 cf switch-space development
 ```
 
-* create a manifest.yml file as follows, in particular, notice the usage of the custom buildpack that Ben Hale developed with specific Ratpack support
+* create a manifest.yml file as follows, in particular, notice the usage of the Java buildpack that Ben Hale developed with specific Ratpack support that will soon be deployed on cfapps.io:
 
 ```
 ---
@@ -54,7 +54,7 @@ applications:
   host: ratpacktest
   domain: cfapps.io
   path: build/distributions/ratpacktest.zip
-  buildpack: https://github.com/nebhale/java-buildpack-with-ratpack.git
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
 
 ```
 
