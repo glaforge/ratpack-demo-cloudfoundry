@@ -5,4 +5,4 @@ applications:
   instances: 1
   domain: cfapps.io
   path: build/distributions/ratpack-demo-cloudfoundry.zip
-  buildpack: https://github.com/nebhale/java-buildpack-with-ratpack.git
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
