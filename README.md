@@ -54,7 +54,6 @@ applications:
   host: ratpacktest
   domain: cfapps.io
   path: build/distributions/ratpacktest.zip
-  buildpack: https://github.com/cloudfoundry/java-buildpack.git
 
 ```
 
